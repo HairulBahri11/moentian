@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kedai Kopi Moentian - Mari Tumbuh Bersama</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        moentianYellow: '#FACC15',
+                        moentianGold: '#EAB308',
+                        moentianDarkRed: '#990000',
+                        moentianMaroon: '#7F1D1D',
+                        moentianCream: '#FEF9C3',
+                        moentianBg: '#FFFBEB',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FACC15;
+            color: #7F1D1D;
+        }
+        .retro-title {
+            font-family: 'Playfair Display', serif;
+        }
+        .turtle-shadow {
+            box-shadow: 6px 6px 0px #7F1D1D;
+        }
+        .turtle-shadow-sm {
+            box-shadow: 3px 3px 0px #7F1D1D;
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FEF9C3;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #990000;
+            border-radius: 5px;
+        }
+
+        /* ===== Scroll reveal animations ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform, opacity;
+        }
+        .reveal.reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.88);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        .reveal-scale.reveal-visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        .reveal-left.reveal-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        .reveal-right.reveal-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ===== Floating / decorative animations ===== */
+        @keyframes floatY {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-14px); }
+        }
+        .animate-float { animation: floatY 4.5s ease-in-out infinite; }
+
+        @keyframes kenburns {
+            0% { transform: scale(1.02); }
+            100% { transform: scale(1.16); }
+        }
+        .animate-kenburns { animation: kenburns 14s ease-in-out infinite alternate; }
+
+        @keyframes pulseSoft {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.55); }
+            70% { box-shadow: 0 0 0 14px rgba(250, 204, 21, 0); }
+        }
+        .animate-pulse-soft { animation: pulseSoft 2.4s ease-out infinite; }
+
+        @keyframes badgeBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.35); }
+        }
+        .badge-bump { animation: badgeBounce 0.4s ease; }
+
+        /* ===== Nav underline + scrollspy ===== */
+        .nav-link { position: relative; padding-bottom: 2px; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0; bottom: -4px;
+            width: 0%;
+            height: 2px;
+            background: #FACC15;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.nav-active::after { width: 100%; }
+        .nav-link.nav-active { color: #ffffff; }
+
+        /* ===== Mobile menu collapse ===== */
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            padding-top: 0;
+            padding-bottom: 0;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+        #mobile-menu.mobile-menu-open {
+            max-height: 500px;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        /* ===== Header shrink on scroll ===== */
+        #header-bar.scrolled #header-inner {
+            height: 4.25rem;
+        }
+        #header-bar.scrolled {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+        }
+
+        /* ===== Cart drawer slide ===== */
+        #cart-panel {
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        #cart-drawer.drawer-open #cart-panel {
+            transform: translateX(0);
+        }
+        #cart-drawer .drawer-overlay {
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        #cart-drawer.drawer-open .drawer-overlay {
+            opacity: 1;
+        }
+
+        /* ===== Lightbox ===== */
+        #lightbox {
+            transition: opacity 0.3s ease;
+        }
+        #lightbox img {
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* ===== Loyalty card tilt ===== */
+        #loyalty-card-wrap {
+            transition: transform 0.15s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        /* ===== Back to top ===== */
+        #scroll-top-btn {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        /* ===== Menu image zoom cursor ===== */
+        .zoomable { cursor: zoom-in; }
+    </style>
+</head>
+<body class="bg-moentianYellow text-moentianMaroon antialiased selection:bg-moentianMaroon selection:text-moentianYellow">
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-moentianDarkRed via-white to-moentianDarkRed z-[70]" style="width:0%"></div>
+
+    <header id="header-bar" class="sticky top-0 z-40 bg-moentianDarkRed/95 backdrop-blur-md text-moentianYellow shadow-2xl border-b-4 border-moentianYellow transition-shadow duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="header-inner" class="flex items-center justify-between h-20 transition-all duration-300">
+                <!-- Logo & Turtle Icon -->
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <div class="w-12 h-12 bg-moentianYellow rounded-2xl flex items-center justify-center overflow-hidden shadow-lg border-2 border-moentianYellow group-hover:rotate-12 transition duration-300">
+                        <img src="logo%20moentian.jpg" alt="Logo Kedai Kopi Moentian" width="1080" height="1080" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <span class="text-2xl font-black tracking-wider retro-title text-moentianYellow">MOENTIAN</span>
+                        <span class="block text-[10px] font-bold tracking-widest text-amber-100 uppercase">Kedai Kopi & Rasa</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-8 font-bold text-sm">
+                    <a href="#beranda" class="nav-link hover:text-white transition duration-200">Beranda</a>
+                    <a href="#menu" class="nav-link hover:text-white transition duration-200">Menu & Kuliner</a>
+                    <a href="#suasana" class="nav-link hover:text-white transition duration-200">Suasana Kafe</a>
+                    <a href="#loyalitas" class="nav-link hover:text-white transition duration-200">Tukar Poin</a>
+                    <a href="#reservasi" class="nav-link hover:text-white transition duration-200">Reservasi Meja</a>
+                    <a href="#lokasi" class="nav-link hover:text-white transition duration-200">Lokasi</a>
+                </nav>
+
+                <!-- Header Actions -->
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleCartDrawer()" class="relative bg-moentianYellow hover:bg-white text-moentianDarkRed px-4 py-2.5 rounded-xl font-black text-sm shadow-lg transition flex items-center space-x-2 border-2 border-moentianDarkRed hover:scale-105 active:scale-95">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        <span class="hidden sm:inline">Pesanan</span>
+                        <span id="cart-badge" class="absolute -top-2 -right-2 bg-moentianDarkRed text-moentianYellow text-xs w-6 h-6 rounded-full flex items-center justify-center font-black border-2 border-moentianYellow scale-0 transition-transform">0</span>
+                    </button>
+
+                    <a href="#reservasi" class="hidden lg:inline-flex bg-moentianMaroon hover:bg-red-900 border-2 border-moentianYellow text-moentianYellow font-black px-4 py-2.5 rounded-xl text-sm shadow transition hover:scale-105">
+                        Booking Meja
+                    </a>
+
+                    <button id="mobile-menu-btn" class="md:hidden text-moentianYellow text-2xl p-2 focus:outline-none">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="md:hidden bg-moentianDarkRed border-t-2 border-moentianYellow px-6 space-y-3 font-bold text-moentianYellow">
+            <a href="#beranda" class="nav-link block py-2 hover:text-white">Beranda</a>
+            <a href="#menu" class="nav-link block py-2 hover:text-white">Menu & Kuliner</a>
+            <a href="#suasana" class="nav-link block py-2 hover:text-white">Suasana Kafe</a>
+            <a href="#loyalitas" class="nav-link block py-2 hover:text-white">Tukar Poin</a>
+            <a href="#reservasi" class="nav-link block py-2 hover:text-white">Reservasi Meja</a>
+            <a href="#lokasi" class="nav-link block py-2 hover:text-white">Lokasi</a>
+        </div>
+    </header>
+
+    <section id="beranda" class="relative overflow-hidden bg-moentianDarkRed text-moentianYellow py-24 lg:py-36 border-b-8 border-moentianYellow">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#FACC15_1.5px,transparent_1.5px)] [background-size:24px_24px]"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left reveal-left reveal-visible">
+                    <div class="inline-flex items-center space-x-2 bg-moentianYellow text-moentianDarkRed px-4 py-2 rounded-full text-xs sm:text-sm font-black tracking-wide shadow-lg border-2 border-moentianDarkRed animate-pulse-soft">
+                        <i class="fa-solid fa-shield-halved animate-spin"></i>
+                        <span>#MariTumbuhBersama Kedai Kopi Moentian</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight retro-title leading-[1.1] text-moentianYellow">
+                        Ruang Hangat <span class="text-white italic">Cerita & Rasa</span> Malam Hari
+                    </h1>
+
+                    <p class="text-base sm:text-xl text-amber-100 max-w-2xl mx-auto lg:mx-0 font-medium leading-relaxed">
+                        Nikmati kebersamaan hangat dengan sajian Rice Bowl spesial, Kebab lezat, Matcha Berry menyegarkan, dan secangkir kopi pilihan dalam balutan estetika logo kura-kura yang penuh makna.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#menu" class="w-full sm:w-auto bg-moentianYellow hover:bg-white text-moentianDarkRed font-black px-8 py-4 rounded-2xl shadow-xl transition transform hover:-translate-y-1 hover:scale-[1.03] text-center border-2 border-moentianDarkRed">
+                            <i class="fa-solid fa-utensils mr-2"></i> Jelajahi Menu
+                        </a>
+                        <a href="#reservasi" class="w-full sm:w-auto bg-moentianMaroon hover:bg-red-900 text-moentianYellow border-2 border-moentianYellow font-black px-8 py-3.5 rounded-2xl transition text-center shadow-md hover:scale-[1.03]">
+                            Reservasi Tempat
+                        </a>
+                    </div>
+
+                    <div class="pt-8 grid grid-cols-3 gap-6 border-t-2 border-moentianYellow/30 text-center lg:text-left">
+                        <div>
+                            <p class="text-3xl font-black text-white" data-counter>16.00</p>
+                            <p class="text-xs text-amber-200 font-bold">Buka Setiap Hari</p>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-black text-white" data-counter>12K+</p>
+                            <p class="text-xs text-amber-200 font-bold">Harga Bersahabat</p>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-black text-white" data-counter>100%</p>
+                            <p class="text-xs text-amber-200 font-bold">Suasana Hangat</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Turtle Logo Card -->
+                <div class="lg:col-span-5 flex justify-center reveal-scale reveal-visible">
+                    <div class="relative w-full max-w-md animate-float">
+                        <div class="absolute -inset-2 bg-moentianYellow rounded-3xl blur-lg opacity-40"></div>
+                        <div class="relative bg-moentianMaroon border-4 border-moentianYellow rounded-3xl p-6 shadow-2xl text-moentianYellow turtle-shadow">
+                            <div class="absolute top-4 right-4 bg-moentianYellow text-moentianDarkRed text-xs font-black px-3 py-1 rounded-full uppercase shadow border border-moentianDarkRed">
+                                Menu Favorit
+                            </div>
+                            <div class="h-64 rounded-2xl overflow-hidden mb-6 relative bg-moentianDarkRed flex items-center justify-center border-2 border-moentianYellow/40 group zoomable" onclick="openLightbox('asset/Rice%20Bowl%20Chicken%20Katsu%20Blackpepper.jpeg','Rice Bowl Chicken Katsu Blackpepper')">
+                                <img src="asset/Rice%20Bowl%20Chicken%20Katsu%20Blackpepper.jpeg" alt="Rice Bowl Chicken Katsu Blackpepper" width="2048" height="2048" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                                <div class="absolute bottom-3 left-3 bg-moentianDarkRed/90 backdrop-blur-md px-3 py-1 rounded-lg text-xs font-black text-moentianYellow border border-moentianYellow">
+                                    Mulai Rp 12.000
+                                </div>
+                                <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition">
+                                    <i class="fa-solid fa-magnifying-glass-plus text-white text-2xl opacity-0 group-hover:opacity-100 transition"></i>
+                                </div>
+                            </div>
+                            <h3 class="text-2xl font-black retro-title text-moentianYellow mb-2">Rice Bowl Katsu Blackpepper</h3>
+                            <p class="text-amber-100 text-sm mb-6 leading-relaxed font-medium">
+                                Porsi pas dan mengenyangkan untuk berbuka puasa atau bersantap malam bersama kerabat tercinta.
+                            </p>
+                            <button onclick="addToCart('Rice Bowl Chicken Katsu Blackpepper', 15000, 'asset/Rice%20Bowl%20Chicken%20Katsu%20Blackpepper.jpeg')" class="w-full bg-moentianYellow hover:bg-white text-moentianDarkRed font-black py-3 rounded-xl transition text-sm shadow-md border-2 border-moentianDarkRed hover:scale-[1.02] active:scale-95">
+                                Pesan Menu Ini
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="py-24 bg-moentianBg text-moentianMaroon">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+                <span class="bg-moentianDarkRed text-moentianYellow px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-xs border border-moentianYellow">Pilihan Rasa Terbaik</span>
+                <h2 class="text-3xl sm:text-5xl font-black retro-title text-moentianDarkRed mt-3 mb-4">Menu & Kuliner Spesial</h2>
+                <p class="text-stone-800 font-medium">Temukan kenikmatan hidangan rumahan dan minuman penuh cinta racikan khas Kedai Kopi Moentian.</p>
+
+                <!-- Filter Categories -->
+                <div class="flex flex-wrap items-center justify-center gap-2 mt-8">
+                    <button onclick="filterMenu('all', this)" class="menu-filter-btn active-btn bg-moentianDarkRed text-moentianYellow px-6 py-2.5 rounded-full font-black text-sm transition shadow-lg border-2 border-moentianDarkRed hover:scale-105">Semua Menu</button>
+                    <button onclick="filterMenu('makanan', this)" class="menu-filter-btn bg-amber-200 hover:bg-amber-300 text-moentianMaroon px-6 py-2.5 rounded-full font-black text-sm transition border-2 border-stone-800/20 hover:scale-105">Makanan & Rice Bowl</button>
+                    <button onclick="filterMenu('minuman', this)" class="menu-filter-btn bg-amber-200 hover:bg-amber-300 text-moentianMaroon px-6 py-2.5 rounded-full font-black text-sm transition border-2 border-stone-800/20 hover:scale-105">Minuman & Matcha</button>
+                    <button onclick="filterMenu('promo', this)" class="menu-filter-btn bg-amber-200 hover:bg-amber-300 text-moentianMaroon px-6 py-2.5 rounded-full font-black text-sm transition border-2 border-stone-800/20 hover:scale-105">Paket Ramadan</button>
+                </div>
+            </div>
+
+            <!-- Menu Lengkap Banner (list menu asset) -->
+            <div class="mb-12 reveal">
+                <div class="relative rounded-3xl overflow-hidden border-4 border-moentianDarkRed shadow-xl bg-moentianMaroon flex flex-col sm:flex-row items-stretch">
+                    <div class="sm:w-64 h-48 sm:h-auto overflow-hidden shrink-0 group zoomable" onclick="openLightbox('asset/list%20menu.jpeg','Daftar Menu & Harga Lengkap Kedai Kopi Moentian')">
+                        <img src="asset/list%20menu.jpeg" alt="Daftar Menu Lengkap Kedai Kopi Moentian" width="2048" height="2048" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-6 sm:p-8 flex-1 text-center sm:text-left flex flex-col justify-center">
+                        <h3 class="text-xl sm:text-2xl font-black retro-title text-moentianYellow mb-2">
+                            <i class="fa-solid fa-book-open mr-2"></i>Lihat Daftar Menu & Harga Lengkap
+                        </h3>
+                        <p class="text-amber-100 text-sm font-medium mb-4">Papan menu asli kami dengan seluruh pilihan rasa dan harga, foto langsung dari kedai Moentian.</p>
+                        <div>
+                            <button onclick="openLightbox('asset/list%20menu.jpeg','Daftar Menu & Harga Lengkap Kedai Kopi Moentian')" class="bg-moentianYellow hover:bg-white text-moentianDarkRed font-black px-6 py-3 rounded-xl text-sm shadow-md transition border-2 border-moentianYellow hover:scale-105 active:scale-95">
+                                Perbesar Foto Menu <i class="fa-solid fa-magnifying-glass-plus ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Menu Cards Grid -->
+            <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="menu-card reveal bg-white rounded-3xl overflow-hidden shadow-xl border-4 border-moentianDarkRed hover:-translate-y-2 hover:shadow-2xl transition duration-300 flex flex-col justify-between" style="transition-delay:0s" data-category="makanan">
+                    <div>
+                        <div class="h-52 overflow-hidden relative bg-moentianDarkRed group zoomable" onclick="openLightbox('asset/Rice%20Bowl%20Chicken%20Katsu%20Blackpepper.jpeg','Rice Bowl Chicken Katsu')">
+                            <img src="asset/Rice%20Bowl%20Chicken%20Katsu%20Blackpepper.jpeg" alt="Rice Bowl Chicken Katsu" width="2048" height="2048" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-moentianYellow text-moentianDarkRed text-xs font-black px-3 py-1.5 rounded-full shadow border border-moentianDarkRed">Makanan</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-black retro-title text-moentianDarkRed">Rice Bowl Chicken Katsu</h3>
+                                <span class="text-moentianMaroon font-black text-lg">Rp 15.000</span>
+                            </div>
+                            <p class="text-stone-700 text-sm leading-relaxed font-medium">Nasi hangat pulen dengan katsu renyah berbalut saus blackpepper pilihan berempah khas Moentian.</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-0">
+                        <button onclick="addToCart('Rice Bowl Chicken Katsu', 15000, 'asset/Rice%20Bowl%20Chicken%20Katsu%20Blackpepper.jpeg')" class="w-full bg-moentianYellow hover:bg-moentianDarkRed hover:text-moentianYellow text-moentianDarkRed font-black py-3 rounded-xl transition duration-200 text-sm flex items-center justify-center space-x-2 border-2 border-moentianDarkRed shadow hover:scale-[1.02] active:scale-95">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>Tambah ke Pesanan</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="menu-card reveal bg-white rounded-3xl overflow-hidden shadow-xl border-4 border-moentianDarkRed hover:-translate-y-2 hover:shadow-2xl transition duration-300 flex flex-col justify-between" style="transition-delay:0.08s" data-category="makanan">
+                    <div>
+                        <div class="h-52 overflow-hidden relative bg-moentianDarkRed group zoomable" onclick="openLightbox('asset/Rice%20Bowl%20Sambal%20Matah.jpeg','Rice Bowl Sambal Matah')">
+                            <img src="asset/Rice%20Bowl%20Sambal%20Matah.jpeg" alt="Rice Bowl Sambal Matah" width="2048" height="2048" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-moentianYellow text-moentianDarkRed text-xs font-black px-3 py-1.5 rounded-full shadow border border-moentianDarkRed">Makanan</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-black retro-title text-moentianDarkRed">Rice Bowl Sambal Matah</h3>
+                                <span class="text-moentianMaroon font-black text-lg">Rp 12.000</span>
+                            </div>
+                            <p class="text-stone-700 text-sm leading-relaxed font-medium">Perpaduan ayam krispi gurih dengan kesegaran sambal matah autentik penuh aroma jeruk limau.</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-0">
+                        <button onclick="addToCart('Rice Bowl Sambal Matah', 12000, 'asset/Rice%20Bowl%20Sambal%20Matah.jpeg')" class="w-full bg-moentianYellow hover:bg-moentianDarkRed hover:text-moentianYellow text-moentianDarkRed font-black py-3 rounded-xl transition duration-200 text-sm flex items-center justify-center space-x-2 border-2 border-moentianDarkRed shadow hover:scale-[1.02] active:scale-95">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>Tambah ke Pesanan</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="menu-card reveal bg-white rounded-3xl overflow-hidden shadow-xl border-4 border-moentianDarkRed hover:-translate-y-2 hover:shadow-2xl transition duration-300 flex flex-col justify-between" style="transition-delay:0.16s" data-category="makanan">
+                    <div>
+                        <div class="h-52 overflow-hidden relative bg-moentianDarkRed group zoomable" onclick="openLightbox('asset/Kebab%20Moentian.jpeg','Kebab Moentian Spesial')">
+                            <img src="asset/Kebab%20Moentian.jpeg" alt="Kebab Moentian" width="2048" height="2048" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-moentianYellow text-moentianDarkRed text-xs font-black px-3 py-1.5 rounded-full shadow border border-moentianDarkRed">Makanan</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-black retro-title text-moentianDarkRed">Kebab Moentian Spesial</h3>
+                                <span class="text-moentianMaroon font-black text-lg">Rp 12.000</span>
+                            </div>
+                            <p class="text-stone-700 text-sm leading-relaxed font-medium">Kulit tortilla lembut berisi daging gurih pilihan, sayuran segar, keju leleh, dan saus racikan spesial.</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-0">
+                        <button onclick="addToCart('Kebab Moentian Spesial', 12000, 'asset/Kebab%20Moentian.jpeg')" class="w-full bg-moentianYellow hover:bg-moentianDarkRed hover:text-moentianYellow text-moentianDarkRed font-black py-3 rounded-xl transition duration-200 text-sm flex items-center justify-center space-x-2 border-2 border-moentianDarkRed shadow hover:scale-[1.02] active:scale-95">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>Tambah ke Pesanan</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="menu-card reveal bg-white rounded-3xl overflow-hidden shadow-xl border-4 border-moentianDarkRed hover:-translate-y-2 hover:shadow-2xl transition duration-300 flex flex-col justify-between" style="transition-delay:0.24s" data-category="minuman">
+                    <div>
+                        <div class="h-52 overflow-hidden relative bg-moentianDarkRed group zoomable" onclick="openLightbox('asset/Matcha%20Berry.jpeg','Matcha Berry (Drink of Love)')">
+                            <img src="asset/Matcha%20Berry.jpeg" alt="Matcha Berry" width="2048" height="2048" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-moentianYellow text-moentianDarkRed text-xs font-black px-3 py-1.5 rounded-full shadow border border-moentianDarkRed">Minuman</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-black retro-title text-moentianDarkRed">Matcha Berry (Drink of Love)</h3>
+                                <span class="text-moentianMaroon font-black text-lg">Rp 14.000</span>
+                            </div>
+                            <p class="text-stone-700 text-sm leading-relaxed font-medium">Kombinasi unik teh hijau matcha premium dengan selai buah berry manis asam menyegarkan.</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-0">
+                        <button onclick="addToCart('Matcha Berry', 14000, 'asset/Matcha%20Berry.jpeg')" class="w-full bg-moentianYellow hover:bg-moentianDarkRed hover:text-moentianYellow text-moentianDarkRed font-black py-3 rounded-xl transition duration-200 text-sm flex items-center justify-center space-x-2 border-2 border-moentianDarkRed shadow hover:scale-[1.02] active:scale-95">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>Tambah ke Pesanan</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="menu-card reveal bg-white rounded-3xl overflow-hidden shadow-xl border-4 border-moentianDarkRed hover:-translate-y-2 hover:shadow-2xl transition duration-300 flex flex-col justify-between" style="transition-delay:0.32s" data-category="minuman">
+                    <div>
+                        <div class="h-52 overflow-hidden relative bg-moentianDarkRed group zoomable" onclick="openLightbox('asset/Barista%20%26%20Latte%20Art.jpeg','Kopi Latte Art Signature')">
+                            <img src="asset/Barista%20%26%20Latte%20Art.jpeg" alt="Kopi Latte Art Signature" width="2048" height="2048" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-moentianYellow text-moentianDarkRed text-xs font-black px-3 py-1.5 rounded-full shadow border border-moentianDarkRed">Minuman</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-black retro-title text-moentianDarkRed">Kopi Latte Art Signature</h3>
+                                <span class="text-moentianMaroon font-black text-lg">Rp 15.000</span>
+                            </div>
+                            <p class="text-stone-700 text-sm leading-relaxed font-medium">Racikan kopi susu creamy dengan latte art cantik, diseduh langsung oleh barista berpengalaman kami.</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-0">
+                        <button onclick="addToCart('Kopi Latte Art Signature', 15000, 'asset/Barista%20%26%20Latte%20Art.jpeg')" class="w-full bg-moentianYellow hover:bg-moentianDarkRed hover:text-moentianYellow text-moentianDarkRed font-black py-3 rounded-xl transition duration-200 text-sm flex items-center justify-center space-x-2 border-2 border-moentianDarkRed shadow hover:scale-[1.02] active:scale-95">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>Tambah ke Pesanan</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="menu-card reveal bg-white rounded-3xl overflow-hidden shadow-xl border-4 border-moentianDarkRed hover:-translate-y-2 hover:shadow-2xl transition duration-300 flex flex-col justify-between" style="transition-delay:0.4s" data-category="promo">
+                    <div>
+                        <div class="h-52 overflow-hidden relative bg-moentianDarkRed group zoomable" onclick="openLightbox('asset/Rice%20Bowl%20Chicken%20Katsu%20Blackpepper.jpeg','Paket Buka Puasa Bersama')">
+                            <img src="asset/Rice%20Bowl%20Chicken%20Katsu%20Blackpepper.jpeg" alt="Paket Buka Puasa" width="2048" height="2048" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                            <span class="absolute top-3 right-3 bg-moentianYellow text-moentianDarkRed text-xs font-black px-3 py-1.5 rounded-full shadow border border-moentianDarkRed">Promo Ramadan</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-black retro-title text-moentianDarkRed">Paket Buka Puasa Bersama</h3>
+                                <span class="text-moentianMaroon font-black text-lg">Rp 25.000</span>
+                            </div>
+                            <p class="text-stone-700 text-sm leading-relaxed font-medium">Pilih 1 Rice Bowl favorit + Gratis Es Teh Manis + Takjil manis penutup hari yang lezat.</p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6 pt-0">
+                        <button onclick="addToCart('Paket Buka Puasa Bersama', 25000, 'asset/Rice%20Bowl%20Chicken%20Katsu%20Blackpepper.jpeg')" class="w-full bg-moentianYellow hover:bg-moentianDarkRed hover:text-moentianYellow text-moentianDarkRed font-black py-3 rounded-xl transition duration-200 text-sm flex items-center justify-center space-x-2 border-2 border-moentianDarkRed shadow hover:scale-[1.02] active:scale-95">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>Tambah ke Pesanan</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="suasana" class="py-24 bg-moentianDarkRed text-moentianYellow relative overflow-hidden border-y-8 border-moentianYellow">
+        <div class="absolute inset-0 opacity-5 bg-[radial-gradient(#FACC15_1px,transparent_1px)] [background-size:20px_20px]"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+                <span class="bg-moentianYellow text-moentianDarkRed px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-xs border border-moentianDarkRed">Momen Keakraban</span>
+                <h2 class="text-3xl sm:text-5xl font-black retro-title mt-3 mb-4 text-moentianYellow">Galeri Suasana Moentian</h2>
+                <p class="text-amber-100 font-medium">Suasana malam hari yang hangat, tempat terbaik untuk bercengkerama bersama sahabat dan keluarga.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+                <div class="group relative rounded-3xl overflow-hidden border-4 border-moentianYellow shadow-2xl min-h-[22rem] reveal-left zoomable" onclick="openLightbox('asset/Suasana%20Kafe%20Interior%20Malam.jpeg','Suasana Interior Kafe di Malam Hari')">
+                    <img src="asset/Suasana%20Kafe%20Interior%20Malam.jpeg" alt="Suasana Kafe Interior Malam" width="1888" height="2232" class="w-full h-full object-cover absolute inset-0 animate-kenburns">
+                    <div class="absolute inset-0 bg-gradient-to-t from-moentianDarkRed via-moentianDarkRed/10 to-transparent flex flex-col justify-end p-8">
+                        <h3 class="text-2xl font-bold retro-title text-moentianYellow">Interior Hangat di Malam Hari</h3>
+                        <p class="text-sm text-amber-100 mt-1 font-medium max-w-sm">Pencahayaan lembut dan dekorasi kasual, tempat ternyaman untuk berkumpul dan berbagi cerita.</p>
+                    </div>
+                    <div class="absolute top-4 right-4 bg-moentianYellow/90 text-moentianDarkRed w-10 h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                        <i class="fa-solid fa-magnifying-glass-plus"></i>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-6 reveal-right">
+                    <div class="flex items-center space-x-4 bg-moentianMaroon p-6 rounded-2xl border-2 border-moentianYellow/40 hover:border-moentianYellow hover:-translate-y-1 transition duration-300">
+                        <div class="w-14 h-14 bg-moentianYellow text-moentianDarkRed rounded-2xl flex items-center justify-center shrink-0 text-xl font-black border border-moentianDarkRed">
+                            <i class="fa-solid fa-wifi"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-moentianYellow text-base">Wifi Kencang & Gratis</h4>
+                            <p class="text-amber-100 text-sm mt-0.5 font-medium">Nyaman untuk mengobrol santai maupun menyelesaikan pekerjaan.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4 bg-moentianMaroon p-6 rounded-2xl border-2 border-moentianYellow/40 hover:border-moentianYellow hover:-translate-y-1 transition duration-300">
+                        <div class="w-14 h-14 bg-moentianYellow text-moentianDarkRed rounded-2xl flex items-center justify-center shrink-0 text-xl font-black border border-moentianDarkRed">
+                            <i class="fa-solid fa-plug-circle-bolt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-moentianYellow text-base">Colokan di Setiap Meja</h4>
+                            <p class="text-amber-100 text-sm mt-0.5 font-medium">Betah berlama-lama tanpa khawatir baterai gawai Anda habis.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4 bg-moentianMaroon p-6 rounded-2xl border-2 border-moentianYellow/40 hover:border-moentianYellow hover:-translate-y-1 transition duration-300">
+                        <div class="w-14 h-14 bg-moentianYellow text-moentianDarkRed rounded-2xl flex items-center justify-center shrink-0 text-xl font-black border border-moentianDarkRed">
+                            <i class="fa-solid fa-music"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-moentianYellow text-base">Playlist Santai Tiap Malam</h4>
+                            <p class="text-amber-100 text-sm mt-0.5 font-medium">Musik hangat yang menemani obrolan panjang bersama kerabat.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="loyalitas" class="py-24 bg-moentianBg text-moentianMaroon">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+                <span class="bg-moentianDarkRed text-moentianYellow px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-xs border border-moentianYellow">Program Pelanggan Setia</span>
+                <h2 class="text-3xl sm:text-5xl font-black retro-title text-moentianDarkRed mt-3 mb-4">Tukar Points & Collect Points</h2>
+                <p class="text-stone-800 font-medium">Kumpulkan poin setiap kali Anda berkunjung ke Moentian dan tukarkan dengan menu gratis!</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center max-w-5xl mx-auto">
+                <!-- Loyalty Card Visual -->
+                <div class="lg:col-span-4 flex justify-center reveal-left">
+                    <div id="loyalty-card-wrap" class="relative w-full max-w-xs animate-float zoomable" onclick="openLightbox('asset/Loyalty%20Card.jpeg','Kartu Loyalitas Kedai Kopi Moentian')">
+                        <div class="absolute -inset-3 bg-moentianDarkRed rounded-3xl blur-xl opacity-20"></div>
+                        <img src="asset/Loyalty%20Card.jpeg" alt="Loyalty Card Moentian" width="2048" height="2048" class="relative w-full rounded-3xl shadow-2xl border-4 border-moentianDarkRed">
+                    </div>
+                </div>
+
+                <!-- Points Simulator -->
+                <div class="lg:col-span-8 reveal-right">
+                    <div class="bg-white rounded-[32px] shadow-2xl border-4 border-moentianDarkRed p-8 sm:p-12">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center border-b-2 border-stone-200 pb-8 mb-8">
+                            <div class="text-center md:text-left">
+                                <span class="text-xs uppercase tracking-wider font-extrabold text-stone-500 block mb-1">Simulasi Poin Anda</span>
+                                <div class="text-4xl font-black text-moentianDarkRed" id="user-points">120 <span class="text-sm font-bold text-moentianMaroon">Pts</span></div>
+                            </div>
+                            <div class="md:col-span-2 flex flex-col sm:flex-row gap-3">
+                                <button onclick="addPoints(25)" class="flex-1 bg-moentianYellow hover:bg-amber-400 text-moentianDarkRed border-2 border-moentianDarkRed font-black py-3.5 px-4 rounded-2xl text-sm transition shadow-md hover:scale-[1.02] active:scale-95">
+                                    <i class="fa-solid fa-receipt mr-1"></i> Transaksi Baru (+25 Pts)
+                                </button>
+                                <button onclick="resetPoints()" class="bg-stone-200 hover:bg-stone-300 text-stone-700 font-bold py-3.5 px-4 rounded-2xl text-sm transition">
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <h3 class="font-black retro-title text-2xl text-moentianDarkRed mb-6">Katalog Penukaran Poin</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-amber-50 p-5 rounded-2xl border-2 border-moentianDarkRed/30 flex items-center justify-between hover:border-moentianDarkRed transition">
+                                <div>
+                                    <h4 class="font-black text-moentianDarkRed text-sm">Gratis 1 Kopi Latte Art</h4>
+                                    <p class="text-xs text-stone-600 mt-0.5 font-bold">Memerlukan 50 Poin</p>
+                                </div>
+                                <button onclick="redeemReward(50, 'Kopi Latte Art Signature')" class="bg-moentianDarkRed hover:bg-red-900 text-moentianYellow text-xs font-black px-4 py-2.5 rounded-xl transition shadow border border-moentianYellow hover:scale-105 active:scale-95">
+                                    Tukar
+                                </button>
+                            </div>
+
+                            <div class="bg-amber-50 p-5 rounded-2xl border-2 border-moentianDarkRed/30 flex items-center justify-between hover:border-moentianDarkRed transition">
+                                <div>
+                                    <h4 class="font-black text-moentianDarkRed text-sm">Diskon 50% Rice Bowl</h4>
+                                    <p class="text-xs text-stone-600 mt-0.5 font-bold">Memerlukan 100 Poin</p>
+                                </div>
+                                <button onclick="redeemReward(100, 'Diskon 50% Rice Bowl')" class="bg-moentianDarkRed hover:bg-red-900 text-moentianYellow text-xs font-black px-4 py-2.5 rounded-xl transition shadow border border-moentianYellow hover:scale-105 active:scale-95">
+                                    Tukar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reservasi" class="py-24 bg-moentianYellow text-moentianMaroon border-t-8 border-moentianDarkRed">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-5 space-y-6 reveal-left">
+                    <span class="bg-moentianDarkRed text-moentianYellow px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-xs border border-moentianYellow">Booking Tempat</span>
+                    <h2 class="text-3xl sm:text-5xl font-black retro-title text-moentianDarkRed leading-tight">Reservasi Meja Anda Lebih Awal</h2>
+                    <p class="text-stone-900 font-medium leading-relaxed">
+                        Ingin berbuka puasa atau ngopi malam bersama rombongan? Amankan tempat duduk terbaik Anda di Kedai Kopi Moentian sekarang juga tanpa antre.
+                    </p>
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-center space-x-3 text-stone-900 text-sm font-black">
+                            <div class="w-8 h-8 rounded-full bg-moentianDarkRed text-moentianYellow flex items-center justify-center"><i class="fa-solid fa-check"></i></div>
+                            <span>Konfirmasi instan melalui sistem</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-stone-900 text-sm font-black">
+                            <div class="w-8 h-8 rounded-full bg-moentianDarkRed text-moentianYellow flex items-center justify-center"><i class="fa-solid fa-check"></i></div>
+                            <span>Pilihan area Indoor atau Outdoor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 reveal-right">
+                    <div class="bg-white rounded-[32px] p-8 sm:p-10 shadow-2xl border-4 border-moentianDarkRed">
+                        <h3 class="text-2xl font-black retro-title text-moentianDarkRed mb-6">Formulir Reservasi Meja</h3>
+                        <form onsubmit="submitReservation(event)" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-black text-stone-800 uppercase mb-1">Nama Lengkap</label>
+                                    <input type="text" id="res-name" required placeholder="Cth. Budi Santoso" class="w-full bg-amber-50 border-2 border-moentianDarkRed/30 rounded-2xl px-4 py-3 text-stone-800 text-sm focus:outline-none focus:border-moentianDarkRed focus:ring-2 focus:ring-moentianDarkRed/20 transition font-medium">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-black text-stone-800 uppercase mb-1">Nomor WhatsApp</label>
+                                    <input type="tel" id="res-phone" required placeholder="Cth. 08123456789" class="w-full bg-amber-50 border-2 border-moentianDarkRed/30 rounded-2xl px-4 py-3 text-stone-800 text-sm focus:outline-none focus:border-moentianDarkRed focus:ring-2 focus:ring-moentianDarkRed/20 transition font-medium">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-black text-stone-800 uppercase mb-1">Jumlah Orang</label>
+                                    <select id="res-guests" class="w-full bg-amber-50 border-2 border-moentianDarkRed/30 rounded-2xl px-4 py-3 text-stone-800 text-sm focus:outline-none focus:border-moentianDarkRed focus:ring-2 focus:ring-moentianDarkRed/20 transition font-medium">
+                                        <option value="2 Orang">2 Orang</option>
+                                        <option value="4 Orang">4 Orang</option>
+                                        <option value="6-10 Orang">6-10 Orang (Rombongan)</option>
+                                        <option value="10+ Orang">10+ Orang (Bukber)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-black text-stone-800 uppercase mb-1">Tanggal</label>
+                                    <input type="date" id="res-date" required class="w-full bg-amber-50 border-2 border-moentianDarkRed/30 rounded-2xl px-4 py-3 text-stone-800 text-sm focus:outline-none focus:border-moentianDarkRed focus:ring-2 focus:ring-moentianDarkRed/20 transition font-medium">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-black text-stone-800 uppercase mb-1">Jam Kedatangan</label>
+                                    <select id="res-time" class="w-full bg-amber-50 border-2 border-moentianDarkRed/30 rounded-2xl px-4 py-3 text-stone-800 text-sm focus:outline-none focus:border-moentianDarkRed focus:ring-2 focus:ring-moentianDarkRed/20 transition font-medium">
+                                        <option value="16.00 WIB">16.00 WIB</option>
+                                        <option value="17.30 WIB">17.30 WIB (Waktu Berbuka)</option>
+                                        <option value="19.00 WIB">19.00 WIB</option>
+                                        <option value="20.30 WIB">20.30 WIB</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-moentianDarkRed hover:bg-red-900 text-moentianYellow font-black py-4 rounded-2xl transition shadow-lg text-base border-2 border-moentianYellow hover:scale-[1.02] active:scale-95">
+                                Konfirmasi Reservasi Meja Sekarang
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="lokasi" class="py-24 bg-moentianDarkRed text-moentianYellow border-t-8 border-moentianYellow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6 reveal-left">
+                    <span class="bg-moentianYellow text-moentianDarkRed px-4 py-1.5 rounded-full font-black uppercase tracking-widest text-xs border border-moentianDarkRed">Titik Kumpul Warga</span>
+                    <h2 class="text-3xl sm:text-5xl font-black retro-title text-moentianYellow">Lokasi & Jam Operasional</h2>
+                    <p class="text-amber-100 leading-relaxed font-medium">
+                        Kedai Kopi Moentian siap menyambut Anda setiap hari dengan suasana hangat khas pedesaan modern.
+                    </p>
+
+                    <a href="https://maps.app.goo.gl/iKdrBSpU2bz4jw6Q6" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-moentianYellow text-moentianDarkRed px-4 py-2 rounded-full font-black text-sm shadow-md border border-moentianDarkRed hover:bg-white transition hover:scale-105">
+                        <i class="fa-solid fa-star text-moentianDarkRed"></i>
+                        <span>4.9 · 27 Ulasan Google</span>
+                    </a>
+
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-start space-x-4 bg-moentianMaroon p-5 rounded-2xl border-2 border-moentianYellow/40 hover:border-moentianYellow hover:-translate-y-1 transition duration-300">
+                            <div class="w-12 h-12 bg-moentianYellow text-moentianDarkRed rounded-xl flex items-center justify-center shrink-0 text-lg font-black border border-moentianDarkRed">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-moentianYellow text-base">Jam Operasional</h4>
+                                <p class="text-amber-100 text-sm mt-0.5 font-medium">Buka Setiap Hari: 16.00 - 23.00 WIB</p>
+                                <p class="text-xs text-moentianYellow mt-1 font-bold">Spesial Ramadan buka hingga sahur/menjelang tengah malam</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4 bg-moentianMaroon p-5 rounded-2xl border-2 border-moentianYellow/40 hover:border-moentianYellow hover:-translate-y-1 transition duration-300">
+                            <div class="w-12 h-12 bg-moentianYellow text-moentianDarkRed rounded-xl flex items-center justify-center shrink-0 text-lg font-black border border-moentianDarkRed">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-moentianYellow text-base">Alamat Kedai</h4>
+                                <p class="text-amber-100 text-sm mt-0.5 font-medium">Gg. 12 No.5, Parse, Dawuhan, Kec. Situbondo, Kabupaten Situbondo, Jawa Timur 68311</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-moentianMaroon rounded-3xl p-4 shadow-2xl border-4 border-moentianYellow reveal-right">
+                    <div class="h-96 rounded-2xl overflow-hidden relative bg-moentianDarkRed border-2 border-moentianYellow/30 group">
+                        <iframe
+                            src="https://www.google.com/maps?q=Kedai%20Kopi%20Moentian,-7.7028087,114.0073728&z=17&output=embed"
+                            class="absolute inset-0 w-full h-full"
+                            style="border:0;"
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Peta Lokasi Kedai Kopi Moentian"></iframe>
+                        <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-moentianDarkRed/80 via-transparent to-transparent"></div>
+                        <a href="https://maps.app.goo.gl/iKdrBSpU2bz4jw6Q6" target="_blank" rel="noopener noreferrer" class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-moentianYellow hover:bg-white text-moentianDarkRed font-black px-6 py-3 rounded-xl shadow-2xl transition inline-flex items-center gap-2 text-sm border-2 border-moentianDarkRed hover:scale-105">
+                            <i class="fa-solid fa-map-location-dot"></i> Buka di Google Maps
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-moentianMaroon text-moentianYellow pt-16 pb-12 border-t-8 border-moentianYellow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <div class="space-y-4 md:col-span-2">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-moentianYellow rounded-2xl flex items-center justify-center overflow-hidden border-2 border-moentianDarkRed">
+                            <img src="logo%20moentian.jpg" alt="Logo Kedai Kopi Moentian" width="1080" height="1080" class="w-full h-full object-cover">
+                        </div>
+                        <span class="text-2xl font-black tracking-wider retro-title text-moentianYellow">MOENTIAN</span>
+                    </div>
+                    <p class="text-amber-100 text-sm max-w-sm leading-relaxed font-medium">
+                        Ruang santai bergaya retro-warm untuk menikmati racikan kopi nikmat, hidangan lezat, dan hangatnya pertemanan. Mari tumbuh bersama!
+                    </p>
+                    <div class="flex space-x-3 pt-2">
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-moentianDarkRed hover:bg-moentianYellow hover:text-moentianDarkRed rounded-full flex items-center justify-center transition shadow border border-moentianYellow hover:scale-110">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-moentianDarkRed hover:bg-moentianYellow hover:text-moentianDarkRed rounded-full flex items-center justify-center transition shadow border border-moentianYellow hover:scale-110">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
+                        <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-moentianDarkRed hover:bg-moentianYellow hover:text-moentianDarkRed rounded-full flex items-center justify-center transition shadow border border-moentianYellow hover:scale-110">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold retro-title text-moentianYellow text-lg mb-4">Tautan Cepat</h4>
+                    <ul class="space-y-2.5 text-sm text-amber-100 font-medium">
+                        <li><a href="#beranda" class="hover:text-moentianYellow transition">Beranda</a></li>
+                        <li><a href="#menu" class="hover:text-moentianYellow transition">Menu & Kuliner</a></li>
+                        <li><a href="#suasana" class="hover:text-moentianYellow transition">Suasana Kafe</a></li>
+                        <li><a href="#loyalitas" class="hover:text-moentianYellow transition">Tukar Poin</a></li>
+                        <li><a href="#reservasi" class="hover:text-moentianYellow transition">Reservasi Meja</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold retro-title text-moentianYellow text-lg mb-4">Jam Operasional</h4>
+                    <p class="text-sm text-amber-100 mb-1 font-medium">Buka Setiap Hari:</p>
+                    <p class="text-moentianYellow font-black text-base mb-3">16.00 - 23.00 WIB</p>
+                    <p class="text-xs text-amber-200 font-bold">Tempat ngobrol santai bersama orang tersayang.</p>
+                </div>
+            </div>
+
+            <div class="border-t border-moentianYellow/30 pt-8 text-center text-xs text-amber-200 font-bold">
+                <p>&copy; 2026 Kedai Kopi Moentian. Hak Cipta Dilindungi. #MariTumbuhBersama</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="drawer-overlay absolute inset-0 bg-stone-900/70 backdrop-blur-sm" onclick="toggleCartDrawer()"></div>
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div id="cart-panel" class="w-screen max-w-md bg-moentianBg shadow-2xl flex flex-col justify-between border-l-4 border-moentianDarkRed">
+                <!-- Drawer Header -->
+                <div class="p-6 bg-moentianDarkRed text-moentianYellow flex items-center justify-between border-b-4 border-moentianYellow">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-bag-shopping text-moentianYellow text-xl"></i>
+                        <h3 class="text-xl font-black retro-title text-moentianYellow">Keranjang Pesanan</h3>
+                    </div>
+                    <button onclick="toggleCartDrawer()" class="text-moentianYellow hover:text-white text-xl p-2 font-black hover:rotate-90 transition duration-300">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Drawer Items List -->
+                <div id="cart-items-container" class="p-6 overflow-y-auto flex-1 space-y-4">
+                    <div class="text-center py-12 text-stone-500 font-bold">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-3 text-moentianDarkRed"></i>
+                        <p class="text-sm">Keranjang Anda masih kosong</p>
+                    </div>
+                </div>
+
+                <!-- Drawer Footer -->
+                <div class="p-6 bg-white border-t-2 border-stone-300 space-y-4 shadow-lg">
+                    <div class="flex justify-between items-center text-lg font-black text-stone-900">
+                        <span>Total Pembayaran:</span>
+                        <span id="cart-total" class="text-moentianDarkRed">Rp 0</span>
+                    </div>
+                    <button onclick="checkoutOrder()" class="w-full bg-moentianDarkRed hover:bg-red-900 text-moentianYellow font-black py-3.5 rounded-2xl transition shadow text-center border-2 border-moentianYellow hover:scale-[1.02] active:scale-95">
+                        Proses Pesanan Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-[80] hidden items-center justify-center bg-black/90 backdrop-blur-sm p-4 opacity-0" onclick="closeLightbox(event)">
+        <button onclick="closeLightbox(event)" class="absolute top-6 right-6 text-white text-3xl hover:text-moentianYellow transition hover:rotate-90 duration-300">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <img id="lightbox-img" src="" alt="Preview" class="max-w-full max-h-[80vh] rounded-2xl shadow-2xl border-4 border-moentianYellow scale-90">
+        <p id="lightbox-caption" class="absolute bottom-8 left-0 right-0 text-moentianYellow font-bold text-center text-sm px-4"></p>
+    </div>
+
+    <!-- Back to Top -->
+    <button id="scroll-top-btn" onclick="window.scrollTo({top:0, behavior:'smooth'})" class="fixed bottom-6 left-6 z-50 bg-moentianDarkRed hover:bg-moentianYellow hover:text-moentianDarkRed text-moentianYellow w-12 h-12 rounded-full shadow-2xl border-2 border-moentianYellow flex items-center justify-center opacity-0 pointer-events-none translate-y-4">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-moentianDarkRed text-moentianYellow px-6 py-3.5 rounded-2xl shadow-2xl border-2 border-moentianYellow transform translate-y-28 opacity-0 transition-all duration-300 flex items-center space-x-3">
+        <i class="fa-solid fa-circle-check text-moentianYellow text-lg"></i>
+        <span id="toast-message" class="text-sm font-bold">Berhasil!</span>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('mobile-menu-open');
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('mobile-menu-open');
+            });
+        });
+
+        // Menu Filtering Logic
+        function filterMenu(category, btnEl) {
+            const buttons = document.querySelectorAll('.menu-filter-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-moentianDarkRed', 'text-moentianYellow', 'shadow-lg');
+                btn.classList.add('bg-amber-200', 'text-moentianMaroon');
+            });
+
+            btnEl.classList.remove('bg-amber-200', 'text-moentianMaroon');
+            btnEl.classList.add('bg-moentianDarkRed', 'text-moentianYellow', 'shadow-lg');
+
+            const cards = document.querySelectorAll('.menu-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'flex';
+                    requestAnimationFrame(() => card.classList.add('reveal-visible'));
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Cart State & Logic
+        let cart = [];
+
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            if (drawer.classList.contains('hidden')) {
+                drawer.classList.remove('hidden');
+                requestAnimationFrame(() => drawer.classList.add('drawer-open'));
+                document.body.style.overflow = 'hidden';
+            } else {
+                drawer.classList.remove('drawer-open');
+                document.body.style.overflow = '';
+                setTimeout(() => drawer.classList.add('hidden'), 400);
+            }
+        }
+
+        function addToCart(name, price, img) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ name, price, img, qty: 1 });
+            }
+            updateCartUI();
+            showToast(`Berhasil menambahkan ${name} ke keranjang!`);
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const badge = document.getElementById('cart-badge');
+            const totalEl = document.getElementById('cart-total');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            if (totalItems > 0) {
+                badge.textContent = totalItems;
+                badge.classList.remove('scale-0');
+                badge.classList.remove('badge-bump');
+                void badge.offsetWidth;
+                badge.classList.add('badge-bump');
+            } else {
+                badge.classList.add('scale-0');
+            }
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-stone-500 font-bold">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-3 text-moentianDarkRed"></i>
+                        <p class="text-sm">Keranjang Anda masih kosong</p>
+                    </div>
+                `;
+                totalEl.textContent = 'Rp 0';
+                return;
+            }
+
+            let html = '';
+            let totalPrice = 0;
+
+            cart.forEach((item, index) => {
+                totalPrice += item.price * item.qty;
+                html += `
+                    <div class="flex items-center justify-between bg-white p-3.5 rounded-2xl border-2 border-moentianDarkRed/20 shadow-sm">
+                        <div class="flex items-center space-x-3">
+                            <img src="${item.img}" alt="${item.name}" class="w-12 h-12 rounded-xl object-cover bg-moentianDarkRed">
+                            <div>
+                                <h4 class="font-black text-stone-900 text-sm">${item.name}</h4>
+                                <p class="text-xs text-moentianDarkRed font-black">Rp ${item.price.toLocaleString('id-ID')}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="changeQty(${index}, -1)" class="w-7 h-7 bg-amber-200 hover:bg-amber-300 text-stone-900 rounded-lg font-black text-xs flex items-center justify-center">-</button>
+                            <span class="text-sm font-black text-stone-900 w-5 text-center">${item.qty}</span>
+                            <button onclick="changeQty(${index}, 1)" class="w-7 h-7 bg-amber-200 hover:bg-amber-300 text-stone-900 rounded-lg font-black text-xs flex items-center justify-center">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            totalEl.textContent = 'Rp ' + totalPrice.toLocaleString('id-ID');
+        }
+
+        function changeQty(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function checkoutOrder() {
+            if (cart.length === 0) {
+                showToast('Keranjang Anda masih kosong!');
+                return;
+            }
+            toggleCartDrawer();
+            showToast('Pesanan berhasil dikirim ke dapur Kedai Moentian!');
+            cart = [];
+            updateCartUI();
+        }
+
+        // Loyalty Points Logic
+        let userPoints = 120;
+
+        function addPoints(pts) {
+            userPoints += pts;
+            document.getElementById('user-points').innerHTML = userPoints + ' <span class="text-sm font-bold text-moentianMaroon">Pts</span>';
+            showToast(`Berhasil menambah ${pts} Poin dari transaksi baru!`);
+        }
+
+        function resetPoints() {
+            userPoints = 0;
+            document.getElementById('user-points').innerHTML = userPoints + ' <span class="text-sm font-bold text-moentianMaroon">Pts</span>';
+            showToast('Poin berhasil direset.');
+        }
+
+        function redeemReward(requiredPts, rewardName) {
+            if (userPoints >= requiredPts) {
+                userPoints -= requiredPts;
+                document.getElementById('user-points').innerHTML = userPoints + ' <span class="text-sm font-bold text-moentianMaroon">Pts</span>';
+                showToast(`Selamat! Berhasil menukar poin untuk "${rewardName}".`);
+            } else {
+                showToast(`Poin tidak cukup! Anda butuh ${requiredPts} Poin.`);
+            }
+        }
+
+        // Reservation Form Logic
+        function submitReservation(e) {
+            e.preventDefault();
+            const name = document.getElementById('res-name').value;
+            const guests = document.getElementById('res-guests').value;
+            const date = document.getElementById('res-date').value;
+            const time = document.getElementById('res-time').value;
+
+            showToast(`Terima kasih ${name}! Meja untuk ${guests} pada ${date} (${time}) berhasil dipesan.`);
+            e.target.reset();
+        }
+
+        // Toast Notification Function
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = message;
+            toast.classList.remove('translate-y-28', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-28', 'opacity-0');
+            }, 3500);
+        }
+
+        // ===== Lightbox =====
+        function openLightbox(src, caption) {
+            const lb = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            const cap = document.getElementById('lightbox-caption');
+            img.src = src;
+            cap.textContent = caption || '';
+            lb.classList.remove('hidden');
+            lb.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            requestAnimationFrame(() => {
+                lb.classList.remove('opacity-0');
+                img.classList.remove('scale-90');
+            });
+        }
+
+        function closeLightbox(e) {
+            if (e) e.stopPropagation();
+            const lb = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            lb.classList.add('opacity-0');
+            img.classList.add('scale-90');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                lb.classList.add('hidden');
+                lb.classList.remove('flex');
+            }, 300);
+        }
+
+        // ===== Scroll reveal on view =====
+        const revealEls = document.querySelectorAll('.reveal, .reveal-scale, .reveal-left, .reveal-right');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal-visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        revealEls.forEach(el => revealObserver.observe(el));
+
+        // ===== Animated stat counters =====
+        function animateCounter(el) {
+            const text = el.textContent.trim();
+            const match = text.match(/^(\d+)(.*)$/);
+            if (!match) return;
+            const target = parseInt(match[1], 10);
+            const suffix = match[2];
+            let current = 0;
+            const duration = 1200;
+            const stepTime = 16;
+            const steps = duration / stepTime;
+            const increment = target / steps;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                el.textContent = Math.floor(current) + suffix;
+            }, stepTime);
+        }
+        const counterEls = document.querySelectorAll('[data-counter]');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        counterEls.forEach(el => counterObserver.observe(el));
+
+        // ===== Loyalty card tilt effect =====
+        const loyaltyCardWrap = document.getElementById('loyalty-card-wrap');
+        if (loyaltyCardWrap) {
+            loyaltyCardWrap.addEventListener('mousemove', (e) => {
+                const rect = loyaltyCardWrap.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -8;
+                const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 8;
+                loyaltyCardWrap.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
+            });
+            loyaltyCardWrap.addEventListener('mouseleave', () => {
+                loyaltyCardWrap.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)';
+            });
+        }
+
+        // ===== Scrollspy, header shrink, progress bar, back-to-top (single scroll listener) =====
+        const headerBar = document.getElementById('header-bar');
+        const headerInner = document.getElementById('header-inner');
+        const progressBar = document.getElementById('scroll-progress');
+        const scrollTopBtn = document.getElementById('scroll-top-btn');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = Array.from(document.querySelectorAll('main, section[id]'));
+        const sectionEls = document.querySelectorAll('section[id]');
+
+        function onScroll() {
+            const scrollY = window.scrollY;
+
+            // Header shrink
+            if (scrollY > 40) {
+                headerBar.classList.add('scrolled');
+                headerInner.classList.remove('h-20');
+                headerInner.classList.add('h-16');
+            } else {
+                headerBar.classList.remove('scrolled');
+                headerInner.classList.remove('h-16');
+                headerInner.classList.add('h-20');
+            }
+
+            // Progress bar
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            progressBar.style.width = (docHeight > 0 ? (scrollY / docHeight) * 100 : 0) + '%';
+
+            // Back to top button
+            if (scrollY > 400) {
+                scrollTopBtn.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+            } else {
+                scrollTopBtn.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+            }
+
+            // Scrollspy
+            let currentId = '';
+            sectionEls.forEach(sec => {
+                const top = sec.offsetTop - 120;
+                if (scrollY >= top) {
+                    currentId = sec.id;
+                }
+            });
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href').replace('#', '');
+                link.classList.toggle('nav-active', href === currentId);
+            });
+        }
+
+        let scrollTicking = false;
+        window.addEventListener('scroll', () => {
+            if (!scrollTicking) {
+                requestAnimationFrame(() => {
+                    onScroll();
+                    scrollTicking = false;
+                });
+                scrollTicking = true;
+            }
+        }, { passive: true });
+
+        onScroll();
+    </script>
+</body>
+</html>
